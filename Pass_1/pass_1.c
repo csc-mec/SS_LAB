@@ -25,10 +25,11 @@ void main()
     else{locctr=0;}
     while(strcmp(opcode,"END")!=0)
     {
-        if(label[0]=='#'){continue;}
+        if(label[0]=='#'){continue;}//skip comments
         fprintf(output,"%d\t",locctr);
         if(strcmp(label,"-")!=0)
         {
+            //check if symbol already exists symtab or not, error if it exists
             char symbol[10],loc[10];
             fseek(symch,SEEK_SET,0);
             fscanf(symch,"%s\t%s",symbol,loc);
@@ -42,8 +43,9 @@ void main()
                 }
                 fscanf(symch,"%s\t%s",symbol,loc);
             }
-            fprintf(symtab,"%s\t%d\n",label,locctr);
+            fprintf(symtab,"%s\t%d\n",label,locctr);//writing to symtab
         }
+        //check if opcode is valid or not
         fseek(optab,SEEK_SET,0);
         fscanf(optab,"%s\t%s",code,mnemonic);
         found=false;
@@ -83,7 +85,7 @@ void main()
             err=true;
             exit(0);
         }
-        fprintf(output,"%s\t%s\t%s\n",label,opcode,operand);
+        fprintf(output,"%s\t%s\t%s\n",label,opcode,operand);//writing to intermediate file
         fscanf(input,"%s\t%s\t%s",label,opcode,operand);
     }
     fprintf(output,"-\t%s\t%s\t%s\n",label,opcode,operand);
