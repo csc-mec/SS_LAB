@@ -15,6 +15,7 @@ void main()
     symch=fopen("symtab.txt","r");
 
     fscanf(input,"%s\t%s\t%s",label,opcode,operand);
+    //initializing locctr 
     if(strcmp(opcode,"START")==0)
     {
         start=atoi(operand);
