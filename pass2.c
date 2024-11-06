@@ -129,7 +129,7 @@ void main()
         }
         if(byte_len>30)
         {
-            fprintf(output,"T^%X^%d",locctr,byte_len);
+            fprintf(output,"T^%d^%X",locctr,byte_len);
             for(int i = 0;i<count;i++)
             {
                 fprintf(output,"^%s",text[i]);
@@ -147,7 +147,7 @@ void main()
         }
         fscanf(input,"%s\t%s\t%s\t%s",loc,label,opcode,operand);
     }
-    fprintf(output,"T^%X^%d",locctr,byte_len);
+    fprintf(output,"T^%d^%X",locctr,byte_len);
     for(int i = 0;i<count;i++)
     {
         fprintf(output,"^%s",text[i]);
