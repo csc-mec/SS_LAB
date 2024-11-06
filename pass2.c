@@ -129,7 +129,7 @@ void main()
         }
         if(byte_len>30)
         {
-            fprintf(output,"T^%d^%d",locctr,byte_len);
+            fprintf(output,"T^%X^%d",locctr,byte_len);
             for(int i = 0;i<count;i++)
             {
                 fprintf(output,"^%s",text[i]);
@@ -147,7 +147,7 @@ void main()
         }
         fscanf(input,"%s\t%s\t%s\t%s",loc,label,opcode,operand);
     }
-    fprintf(output,"T^%d^%d",locctr,byte_len);
+    fprintf(output,"T^%X^%d",locctr,byte_len);
     for(int i = 0;i<count;i++)
     {
         fprintf(output,"^%s",text[i]);
@@ -192,6 +192,6 @@ END -
 Output
 
 H^-^2000^17
-T^2000^23^LDA2012^STA200C^LDCH2015^STCH2016^-^5^00005A^-
+T^2000^17^LDA2012^STA200C^LDCH2015^STCH2016^-^5^00005A^-
 E^2000
 */
