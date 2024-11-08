@@ -6,7 +6,7 @@ void main()
 {
     char opcode[10],label[10],operand[10],mnemonic[10],code[10];
     FILE *input,*output,*symtab,*optab,*symch;
-    int locctr,start,length;
+    int locctr,start;
     bool err = false,found;
     input=fopen("sourcecode.txt","r");
     output=fopen("intermediate.txt","w");
@@ -15,10 +15,10 @@ void main()
     symch=fopen("symtab.txt","r");
 
     fscanf(input,"%s\t%s\t%s",label,opcode,operand);
-    //initializing locctr 
     if(strcmp(opcode,"START")==0)
     {
-        start=atoi(operand);
+        fseek(input,SEEK_SET,0);
+        fscanf(input,"%s\t%s\t%X",label,opcode,&start);
         locctr=start;
         fprintf(output,"-\t%s\t%s\t%s\n",label,opcode,operand);
         fscanf(input,"%s\t%s\t%s",label,opcode,operand);
@@ -26,11 +26,10 @@ void main()
     else{locctr=0;}
     while(strcmp(opcode,"END")!=0)
     {
-        if(label[0]=='#'){continue;}//skip comments
-        fprintf(output,"%d\t",locctr);
+        if(label[0]=='#'){continue;}
+        fprintf(output,"%X\t",locctr);
         if(strcmp(label,"-")!=0)
         {
-            //check if symbol already exists symtab or not, error if it exists
             char symbol[10],loc[10];
             fseek(symch,SEEK_SET,0);
             fscanf(symch,"%s\t%s",symbol,loc);
@@ -44,9 +43,8 @@ void main()
                 }
                 fscanf(symch,"%s\t%s",symbol,loc);
             }
-            fprintf(symtab,"%s\t%d\n",label,locctr);//writing to symtab
+            fprintf(symtab,"%s\t%d\n",label,locctr);
         }
-        //check if opcode is valid or not
         fseek(optab,SEEK_SET,0);
         fscanf(optab,"%s\t%s",code,mnemonic);
         found=false;
@@ -86,16 +84,20 @@ void main()
             err=true;
             exit(0);
         }
-        fprintf(output,"%s\t%s\t%s\n",label,opcode,operand);//writing to intermediate file
+        fprintf(output,"%s\t%s\t%s\n",label,opcode,operand);
         fscanf(input,"%s\t%s\t%s",label,opcode,operand);
     }
     fprintf(output,"-\t%s\t%s\t%s\n",label,opcode,operand);
     printf("Length of code = %d\n",locctr-start);
+    FILE *length;
+    length=fopen("length.txt","w");
+    fprintf(length,"%d",locctr-start);
     fclose(input);
     fclose(output);
     fclose(symtab);
     fclose(optab);
     fclose(symch);
+    fclose(length);
 }
 /*
 SOURCE CODE:
@@ -121,10 +123,10 @@ END -
 
 SYMBOL TABLE:
 
-ALPHA	2012
-FIVE	2018
-CHARZ	2021
-C1	2022
+ALPHA	200C
+FIVE	2012
+CHARZ	2015
+C1	2016
 
 INTERMEDIATE FILE:
 
@@ -133,11 +135,14 @@ INTERMEDIATE FILE:
 2003	-	STA	ALPHA
 2006	-	LDCH	CHARZ
 2009	-	STCH	C1
-2012	ALPHA	RESW	2
-2018	FIVE	WORD	5
-2021	CHARZ	BYTE	C'Z'
-2022	C1	RESB	1
+200C	ALPHA	RESW	2
+2012	FIVE	WORD	5
+2015	CHARZ	BYTE	C'Z'
+2016	C1	RESB	1
 -	-	END	-
 
-Length of code = 23
+LENGTH FILE:
+
+23
+
 */
