@@ -41,9 +41,9 @@ void main()
                     printf("Duplicate Symbol\n");
                     exit(0);
                 }
-                fscanf(symch,"%s\t%X",symbol,loc);
+                fscanf(symch,"%s\t%s",symbol,loc);
             }
-            fprintf(symtab,"%s\t%d\n",label,locctr);
+            fprintf(symtab,"%s\t%X\n",label,locctr);
         }
         fseek(optab,SEEK_SET,0);
         fscanf(optab,"%s\t%s",code,mnemonic);
@@ -99,50 +99,3 @@ void main()
     fclose(symch);
     fclose(length);
 }
-/*
-SOURCE CODE:
-
--	START	2000
--	LDA FIVE
--	STA	ALPHA
--	LDCH 	CHARZ
-- 	STCH 	C1
-ALPHA 	RESW 	2
-FIVE 	WORD 	5
-CHARZ 	BYTE 	C'Z'
-C1 	RESB 	1
-- 	END	-
-
-OBJECT TABLE:
-
-LDA 03
-STA	0F
-LDCH	53
-STCH	57
-END -
-
-SYMBOL TABLE:
-
-ALPHA	200C
-FIVE	2012
-CHARZ	2015
-C1	2016
-
-INTERMEDIATE FILE:
-
--	-	START	2000
-2000	-	LDA	FIVE
-2003	-	STA	ALPHA
-2006	-	LDCH	CHARZ
-2009	-	STCH	C1
-200C	ALPHA	RESW	2
-2012	FIVE	WORD	5
-2015	CHARZ	BYTE	C'Z'
-2016	C1	RESB	1
--	-	END	-
-
-LENGTH FILE:
-
-23
-
-*/
